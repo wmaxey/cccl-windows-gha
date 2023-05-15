@@ -1,0 +1,16 @@
+{
+  "version": "1.0",
+  "components": [
+    "Microsoft.VisualStudio.Component.Roslyn.Compiler",
+    "Microsoft.Component.MSBuild",
+    "Microsoft.VisualStudio.Component.CoreBuildTools",
+    "Microsoft.VisualStudio.Workload.MSBuildTools",
+    "Microsoft.VisualStudio.Component.Windows10SDK",
+    "Microsoft.VisualStudio.Component.VC.Tools.x86.x64",
+    "Microsoft.VisualStudio.Component.VC.Redist.14.Latest",
+    "Microsoft.VisualStudio.Component.VC.CMake.Project",
+    "Microsoft.VisualStudio.Component.Windows10SDK.20348",
+    "Microsoft.VisualStudio.Component.VC.14.34.17.4.x86.x64",
+    "Microsoft.VisualStudio.Component.VC.14.35.17.5.x86.x64"
+  ]
+}
