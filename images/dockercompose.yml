@@ -17,7 +17,7 @@ services:
       dockerfile: ../msvc.dockerfile
       args:
         MSVC_VER: &msvc2019 "16"
-        ROOT_IMAGE: &server "mcr.microsoft.com/windows/servercore:ltsc2019"
+        ROOT_IMAGE: *server
 
   windows-server-2017:
     image: "$REPO:windows-server-cuda-msvc-2017"
@@ -27,7 +27,7 @@ services:
       dockerfile: ../msvc.dockerfile
       args:
         MSVC_VER: &msvc2017 "15"
-        ROOT_IMAGE: &server "mcr.microsoft.com/windows/servercore:ltsc2017"
+        ROOT_IMAGE: *server
 
   windows-2022:
     image: "$REPO:windows-cuda-msvc-2022"
