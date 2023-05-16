@@ -34,6 +34,6 @@ runs:
     - run: docker push $ENV:TAG
       shell: powershell
       env:
-        TAG: "${{ inputs.repo }}:${{ inputs.os }}-cuda-msvc-${{ inputs.version }}"
+        TAG: "${{ inputs.repo }}:${{ inputs.os }}-cuda-msvc-${{ inputs.vs_version }}"
       id: push
       name: "Push ${{ inputs.repo }}:${{ inputs.service }}"
