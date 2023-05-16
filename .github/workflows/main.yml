@@ -11,26 +11,27 @@ on:
 
 jobs:
   build:
-    name: Build Windows Images
-     strategy:
+    runs-on: windows-latest
+    strategy:
       fail-fast: false
       matrix:
         edition: [windows, windows-server]
         version: [2017, 2019, 2022]
 
-      steps:
-        - name: Checkout ${{ github.repository }}
-          uses: actions/checkout@v3
-          with:
-            fetch-depth: 0
-            persist-credentials: false
+    name: Build Windows Images
+    steps:
+      - name: Checkout ${{ github.repository }}
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          persist-credentials: false
 
-        - name: Log in to registry
-          run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+      - name: Log in to registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
 
-        - name: "Build image: ${{ matrix.edition }} + VS${{ matrix.version }}"
-          uses: ./.github/actions/build-and-push-windows-images
-          with:
-            repo: ghcr.io/${{ github.repository }}
-            os: ${{ matrix.edition }}
-            vs_version: "${{ matrix.version }}"
+      - name: "Build image: ${{ matrix.edition }} + VS${{ matrix.version }}"
+        uses: ./.github/actions/build-and-push-windows-images
+        with:
+          repo: ghcr.io/${{ github.repository }}
+          os: ${{ matrix.edition }}
+          vs_version: "${{ matrix.version }}"
