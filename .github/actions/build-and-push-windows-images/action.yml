@@ -1,6 +1,5 @@
-name: build-windows-image
-
-description: Builds a wcow image
+name: "Build and push Windows images"
+description: "Builds wcow images with MSVC and CUDA"
 
 inputs:
   repo:
@@ -16,26 +15,25 @@ inputs:
     required: true
     description: MSVC version
 
-
 outputs:
   repo:
     value: ${{ steps.build.outputs.repo }}
 
 runs:
   using: composite
-  env:
-    REPO: ${{ inputs.repo }}
-    SERVICE: "${{ inputs.os }}-${{ inputs.version }}"
-    # e.g. ghcr.io/namespace/repo:windows-server-cuda-msvc-2022
-    TAG: ${{ inputs.repo }}:${{ inputs.os }}-cuda-msvc-${{ inputs.version }}
   steps:
-    - id: build
-      name: Build ${{ inputs.repo }}:${{ inputs.service }}
-      env:
-      run: |
-        docker compose -f ./images/dockercompose.yml $SERVICE
 
-    - id: push
-      name: Push ${{ inputs.repo }}:${{ inputs.service }}
-      run: |
-        docker push -f ./images/dockercompose.yml $TAG
+    - run: docker compose -f ./images/dockercompose.yml build $ENV:SERVICE
+      shell: powershell
+      env:
+        REPO: "${{ inputs.repo }}"
+        SERVICE: "${{ inputs.os }}-${{ inputs.vs_version }}"
+      id: build
+      name: "Build ${{ inputs.repo }}:${{ inputs.service }}"
+
+    - run: docker push -f ./images/dockercompose.yml $ENV:TAG
+      shell: powershell
+      env:
+        TAG: "${{ inputs.repo }}:${{ inputs.os }}-cuda-msvc-${{ inputs.version }}"
+      id: push
+      name: "Push ${{ inputs.repo }}:${{ inputs.service }}"
