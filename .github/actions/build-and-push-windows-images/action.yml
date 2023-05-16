@@ -23,7 +23,7 @@ runs:
   using: composite
   steps:
 
-    - run: docker compose -f ./images/dockercompose.yml build $ENV:SERVICE
+    - run: docker compose -f ./images/dockercompose.yml build $ENV:SERVICE --progress=plain
       shell: powershell
       env:
         REPO: "${{ inputs.repo }}"
@@ -31,7 +31,7 @@ runs:
       id: build
       name: "Build ${{ inputs.repo }}:${{ inputs.service }}"
 
-    - run: docker push -f ./images/dockercompose.yml $ENV:TAG
+    - run: docker push -f ./images/dockercompose.yml $ENV:TAG --progress=plain
       shell: powershell
       env:
         TAG: "${{ inputs.repo }}:${{ inputs.os }}-cuda-msvc-${{ inputs.version }}"
