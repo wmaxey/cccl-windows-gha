@@ -31,7 +31,7 @@ runs:
       id: build
       name: "Build ${{ inputs.repo }}:${{ inputs.service }}"
 
-    - run: docker push $ENV:TAG --progress=plain
+    - run: docker push $ENV:TAG
       shell: powershell
       env:
         TAG: "${{ inputs.repo }}:${{ inputs.os }}-cuda-msvc-${{ inputs.version }}"
