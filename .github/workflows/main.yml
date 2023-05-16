@@ -1,4 +1,4 @@
-name: Build Windows Image
+name: Build Windows Images
 
 on:
   push:

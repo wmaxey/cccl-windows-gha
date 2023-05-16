@@ -38,7 +38,7 @@ services:
       dockerfile: ../msvc.dockerfile
       args:
         MSVC_VER: *msvc2022
-        ROOT_IMAGE: &windows "mcr.microsoft.com/windows:20H2"
+        ROOT_IMAGE: &windows "mcr.microsoft.com/windows:ltsc2019"
 
   windows-2019:
     isolation: 'hyperv'
