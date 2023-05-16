@@ -30,6 +30,7 @@ services:
         ROOT_IMAGE: *server
 
   windows-2022:
+    isolation: 'hyperv'
     image: "$REPO:windows-cuda-msvc-2022"
     tty: true
     build:
@@ -40,6 +41,7 @@ services:
         ROOT_IMAGE: &windows "mcr.microsoft.com/windows:20H2"
 
   windows-2019:
+    isolation: 'hyperv'
     image: "$REPO:windows-cuda-msvc-2019"
     tty: true
     build:
@@ -50,6 +52,7 @@ services:
         ROOT_IMAGE: *windows
 
   windows-2017:
+    isolation: 'hyperv'
     image: "$REPO:windows-cuda-msvc-2017"
     tty: true
     build:
