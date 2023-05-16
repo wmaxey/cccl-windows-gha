@@ -11,7 +11,8 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    # Only Windows 2019 supports building Windows 10 images in hyper-v
+    runs-on: windows-2019
     strategy:
       fail-fast: false
       matrix:
