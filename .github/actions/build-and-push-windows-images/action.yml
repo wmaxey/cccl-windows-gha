@@ -1,0 +1,41 @@
+name: build-windows-image
+
+description: Builds a wcow image
+
+inputs:
+  repo:
+    type: string
+    required: true
+    description: Image repository
+  os:
+    type: string
+    required: true
+    description: Windows edition
+  vs_version:
+    type: string
+    required: true
+    description: MSVC version
+
+
+outputs:
+  repo:
+    value: ${{ steps.build.outputs.repo }}
+
+runs:
+  using: composite
+  env:
+    REPO: ${{ inputs.repo }}
+    SERVICE: "${{ inputs.os }}-${{ inputs.version }}"
+    # e.g. ghcr.io/namespace/repo:windows-server-cuda-msvc-2022
+    TAG: ${{ inputs.repo }}:${{ inputs.os }}-cuda-msvc-${{ inputs.version }}
+  steps:
+    - id: build
+      name: Build ${{ inputs.repo }}:${{ inputs.service }}
+      env:
+      run: |
+        docker compose -f ./images/dockercompose.yml $SERVICE
+
+    - id: push
+      name: Push ${{ inputs.repo }}:${{ inputs.service }}
+      run: |
+        docker push -f ./images/dockercompose.yml $TAG
