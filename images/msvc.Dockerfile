@@ -12,7 +12,7 @@ ADD ./ /tools
 
 RUN /tools/configure.ps1 -msvcVersion "17"
 
-ADD scripts/env_config.psm1  /Users/ContainerAdministrator/Documents/WindowsPowerShell/Modules/CCCLenv/CCCLenv.psm1
+ADD scripts/CCCLenv.psm1  /Users/ContainerAdministrator/Documents/WindowsPowerShell/Modules/CCCLenv/CCCLenv.psm1
 ADD scripts/profile.ps1  /Users/ContainerAdministrator/Documents/WindowsPowerShell/Microsoft.PowerShell_profile.ps1
 
 # Discard history to cleanup image
