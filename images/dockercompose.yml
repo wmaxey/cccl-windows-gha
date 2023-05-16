@@ -1,6 +1,6 @@
 services:
   windows-server-2022:
-    image: "$REPO:msvc.server.2022"
+    image: "$REPO:windows-server-cuda-msvc-2022"
     tty: true
     build:
       context: ./windows
@@ -10,7 +10,7 @@ services:
         ROOT_IMAGE: &server "mcr.microsoft.com/windows/servercore:ltsc2022"
 
   windows-server-2019:
-    image: "$REPO:msvc.server.2019"
+    image: "$REPO:windows-server-cuda-msvc-2019"
     tty: true
     build:
       context: ./windows
@@ -20,7 +20,7 @@ services:
         ROOT_IMAGE: &server "mcr.microsoft.com/windows/servercore:ltsc2019"
 
   windows-server-2017:
-    image: "$REPO:msvc.server.2017"
+    image: "$REPO:windows-server-cuda-msvc-2017"
     tty: true
     build:
       context: ./windows
@@ -30,7 +30,7 @@ services:
         ROOT_IMAGE: &server "mcr.microsoft.com/windows/servercore:ltsc2017"
 
   windows-2022:
-    image: "$REPO:msvc.2022"
+    image: "$REPO:windows-cuda-msvc-2022"
     tty: true
     build:
       context: ./windows
@@ -40,7 +40,7 @@ services:
         ROOT_IMAGE: &windows "mcr.microsoft.com/windows:20H2"
 
   windows-2019:
-    image: "$REPO:msvc.2019"
+    image: "$REPO:windows-cuda-msvc-2019"
     tty: true
     build:
       context: ./windows
@@ -50,7 +50,7 @@ services:
         ROOT_IMAGE: *windows
 
   windows-2017:
-    image: "$REPO:msvc.2017"
+    image: "$REPO:windows-cuda-msvc-2017"
     tty: true
     build:
       context: ./windows
