@@ -19,8 +19,8 @@ Push-location "$PSScriptRoot"
 ./scripts/install-ninja.ps1
 
 ## Save the current environmet without MSVC plugged in
-New-Item -ItemType Directory -Path "$ENV:TEMP" -Name "cccl_env"
-Get-ChildItem env: | Export-CliXml "$ENV:TEMP\cccl_env\env-var.clixml"
+New-Item -ItemType Directory -Path "$HOME" -Name "cccl_env"
+Get-ChildItem env: | Export-CliXml "$HOME\cccl_env\env-var.clixml"
 
 ## Install MSVC
 ./scripts/install-vs.ps1 -msvcVersion $msvcVersion
