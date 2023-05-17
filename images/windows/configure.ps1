@@ -20,6 +20,8 @@ Push-location "$PSScriptRoot"
 
 ## Save the current environmet without MSVC plugged in
 New-Item -ItemType Directory -Path "$HOME" -Name "cccl_env"
+
+$ENV:INSTALLED_MSVC_VERSION=$msvcVersion
 Get-ChildItem env: | Export-CliXml "$HOME\cccl_env\env-var.clixml"
 
 ## Install MSVC

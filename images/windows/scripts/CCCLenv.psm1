@@ -31,35 +31,45 @@ $MSBuildPathMap = @{
     "14.33"="$MSBuildPath\17\VC\Auxiliary\Build"
     "14.34"="$MSBuildPath\17\VC\Auxiliary\Build"
     "14.35"="$MSBuildPath\17\VC\Auxiliary\Build"
+    "latest"="$MSBuildPath\$ENV:INSTALLED_MSVC_VERSION\VC\Auxiliary\Build"
 }
 
 function Get-VSDevPrompt {
-    param([string]$vcver = "14.3")
+    param(
+        [string]
+        $vcver="latest"
+    )
+
     if (Test-Path -Path $EnvVarBackup) {
         Remove-Item -Path "ENV:*"
         Import-CliXml $EnvVarBackup | % { Set-Item -force -path "env:$($_.Name)" $_.Value }
     }
 
-    # Save all the process' environment variables in CLIXML format.
-    $BuildPath = $MSBuildPathMap[$vcver]
     Write-Output "Loading VC from: $BuildPath"
+    $BuildPath = $MSBuildPathMap[$vcver]
 
+    # If a specific version has been requested provide that rather than grab default
     Push-Location "$BuildPath"
-    cmd /c "vcvars64.bat -vcvars_ver=$vcver & set" |
-        foreach {
-            if ($_ -match "=") {
-                $v = $_.split("="); set-item -force -path "ENV:\$($v[0])"  -value "$($v[1])"
-            }
+    $cmd="vcvars64.bat & set"
+    if ($vcver -ne "latest") {
+        $cmd="vcvars64.bat -vcvars_ver=$vcver & set"
+    }
+
+    cmd /c $cmd |
+    foreach {
+        if ($_ -match "=") {
+            $v = $_.split("="); set-item -force -path "ENV:\$($v[0])"  -value "$($v[1])"
         }
+    }
     Pop-Location
 
-    # Stupid, but makes cl.exe happy
+    # Stupid, but can make CMake happy if it is needed
     $global:CC_FP = $(get-command cl).Source.Replace("\","/")
 
     Write-Host "`nVisual Studio Command Prompt variables set." -ForegroundColor Yellow
     Write-Host "Use `$CC_FP as shortcut for Cmake: $CC_FP" -ForegroundColor Yellow
 }
 
-Get-VSDevPrompt 14.35
+Get-VSDevPrompt
 
 Export-ModuleMember -Function Get-VSDevPrompt
