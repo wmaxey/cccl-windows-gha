@@ -2,8 +2,10 @@ name: Build Windows Images
 
 on:
   push:
+    paths: [.github/**, images/**]
     branches: [ "main" ]
   pull_request:
+    paths: [.github/**, images/**]
     branches: [ "main" ]
 
   workflow_dispatch:

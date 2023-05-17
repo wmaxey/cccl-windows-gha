@@ -24,5 +24,6 @@ Get-ChildItem env: | Export-CliXml "$HOME\cccl_env\env-var.clixml"
 
 ## Install MSVC
 ./scripts/install-vs.ps1 -msvcVersion $msvcVersion
+./scripts/clear-temp.ps1
 
 Pop-Location
