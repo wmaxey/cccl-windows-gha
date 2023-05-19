@@ -16,4 +16,4 @@ runs:
       shell: powershell
       run: |
         docker run --mount type=bind,src=$(pwd),dst=C:\test ${{ inputs.image }} `
-        "C:\test\.github\actions\test-windows-images\action.ps1"
+        "C:\test\.github\actions\test-windows-image\action.ps1"

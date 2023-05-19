@@ -1,4 +1,4 @@
-name: "Build and push Windows images"
+name: "Build Windows images"
 description: "Builds wcow images with MSVC and CUDA"
 
 inputs:
@@ -18,7 +18,7 @@ inputs:
 outputs:
   image:
     description: URL of tagged and pushed image
-    value: ${{ steps.push.outputs.image }}
+    value: ${{ steps.build.outputs.image }}
 
 runs:
   using: composite
@@ -30,13 +30,7 @@ runs:
       env:
         REPO: "${{ inputs.repo }}"
         SERVICE: "${{ inputs.os }}-${{ inputs.vs_version }}"
-      run: docker compose -f ./images/dockercompose.yml build $ENV:SERVICE --progress=plain
-
-    - name: "Push ${{ inputs.repo }}:${{ inputs.service }}"
-      id: push
-      shell: powershell
-      env:
         TAG: "${{ inputs.repo }}:${{ inputs.os }}-cuda-msvc-${{ inputs.vs_version }}"
       run: |
+        docker compose -f ./images/dockercompose.yml build $ENV:SERVICE --progress=plain
         echo "image=$ENV:TAG" >> $ENV:GITHUB_OUTPUT
-        docker push $ENV:TAG

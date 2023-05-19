@@ -34,13 +34,20 @@ jobs:
 
       - name: "Build image: ${{ matrix.edition }} + VS${{ matrix.version }}"
         id: build_image
-        uses: ./.github/actions/build-and-push-windows-images
+        uses: ./.github/actions/build-windows-image
         with:
           repo: ghcr.io/${{ github.repository }}
           os: ${{ matrix.edition }}
           vs_version: "${{ matrix.version }}"
 
-      - name: "Test image: ${{ matrix.edition }} + VS${{ matrix.version }}"
-        uses: ./.github/actions/test-windows-images
+      - name: "Test image: ${{ steps.build_image.outputs.image }}"
+        id: test_image
+        uses: ./.github/actions/test-windows-image
+        with:
+          image: "${{ steps.build_image.outputs.image }}"
+
+      - name: "Push image: ${{ steps.build_image.outputs.image }}"
+        id: push_image
+        uses: ./.github/actions/push-windows-image
         with:
           image: "${{ steps.build_image.outputs.image }}"
