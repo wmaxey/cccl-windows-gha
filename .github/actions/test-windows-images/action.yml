@@ -1,0 +1,19 @@
+name: "Test Windows images"
+description: "Tests MSVC and CUDA on each container"
+
+inputs:
+  image:
+    type: string
+    required: true
+    description: Image to test
+
+runs:
+  using: composite
+  steps:
+
+    - name: "Test ${{ inputs.image }}"
+      id: image_test
+      shell: powershell
+      run: |
+        docker run --mount type=bind,src=$(pwd),dst=C:\test ${{ inputs.image }} `
+        "C:\test\.github\actions\test-windows-images\action.ps1"

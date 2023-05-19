@@ -16,24 +16,27 @@ inputs:
     description: MSVC version
 
 outputs:
-  repo:
-    value: ${{ steps.build.outputs.repo }}
+  image:
+    description: URL of tagged and pushed image
+    value: ${{ steps.push.outputs.image }}
 
 runs:
   using: composite
   steps:
 
-    - run: docker compose -f ./images/dockercompose.yml build $ENV:SERVICE --progress=plain
+    - name: "Build ${{ inputs.repo }}:${{ inputs.service }}"
+      id: build
       shell: powershell
       env:
         REPO: "${{ inputs.repo }}"
         SERVICE: "${{ inputs.os }}-${{ inputs.vs_version }}"
-      id: build
-      name: "Build ${{ inputs.repo }}:${{ inputs.service }}"
+      run: docker compose -f ./images/dockercompose.yml build $ENV:SERVICE --progress=plain
 
-    - run: docker push $ENV:TAG
+    - name: "Push ${{ inputs.repo }}:${{ inputs.service }}"
+      id: push
       shell: powershell
       env:
         TAG: "${{ inputs.repo }}:${{ inputs.os }}-cuda-msvc-${{ inputs.vs_version }}"
-      id: push
-      name: "Push ${{ inputs.repo }}:${{ inputs.service }}"
+      run: |
+        echo "image=$ENV:TAG" >> $ENV:GITHUB_OUTPUT
+        docker push $ENV:TAG
