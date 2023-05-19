@@ -1,2 +1,3 @@
 # Import CCCL Profile to import saved paths
-Import-Module CCCLEnv
+# Commented out as this is automatically loaded on first invocation of `get-vsdevprompt`
+# Import-Module CCCLEnv

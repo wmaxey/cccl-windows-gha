@@ -45,8 +45,8 @@ function Get-VSDevPrompt {
         Import-CliXml $EnvVarBackup | % { Set-Item -force -path "env:$($_.Name)" $_.Value }
     }
 
-    Write-Output "Loading VC from: $BuildPath"
     $BuildPath = $MSBuildPathMap[$vcver]
+    Write-Output "Loading VC from: $BuildPath"
 
     # If a specific version has been requested provide that rather than grab default
     Push-Location "$BuildPath"
@@ -69,7 +69,5 @@ function Get-VSDevPrompt {
     Write-Host "`nVisual Studio Command Prompt variables set." -ForegroundColor Yellow
     Write-Host "Use `$CC_FP as shortcut for Cmake: $CC_FP" -ForegroundColor Yellow
 }
-
-Get-VSDevPrompt
 
 Export-ModuleMember -Function Get-VSDevPrompt

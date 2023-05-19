@@ -18,7 +18,7 @@ Push-location "$PSScriptRoot"
 ./scripts/install-cmake.ps1
 ./scripts/install-ninja.ps1
 
-## Save the current environmet without MSVC plugged in
+## Save the current environment without MSVC plugged in
 New-Item -ItemType Directory -Path "$HOME" -Name "cccl_env"
 
 $ENV:INSTALLED_MSVC_VERSION=$msvcVersion
