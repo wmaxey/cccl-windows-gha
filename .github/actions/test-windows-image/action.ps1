@@ -18,9 +18,9 @@ Write-Output "Test MSVC"
 cl
 TestReturnCode
 
-echo "int main() {return 0;}" > $ENV:TEMP/test.cpp
-Push-Location $ENV:TEMP
-cl $ENV:TEMP/test.cpp
+Push-Location ~\
+echo "int main() {return 0;}" > .\test.cpp
+cl .\test.cpp
 TestReturnCode
 Pop-Location
 
@@ -32,9 +32,9 @@ Write-Output "Test NVCC"
 nvcc --version
 TestReturnCode
 
-echo "int main() {return 0;}" > $ENV:TEMP/test.cu
-Push-Location $ENV:TEMP
-nvcc $ENV:TEMP/test.cu
+Push-Location ~
+echo "int main() {return 0;}" > .\test.cu
+nvcc .\test.cu
 TestReturnCode
 Pop-Location
 

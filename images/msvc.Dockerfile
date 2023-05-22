@@ -14,9 +14,3 @@ RUN /tools/configure.ps1 -msvcVersion $ENV:MSVC_VER
 
 ADD scripts/CCCLenv.psm1  /Users/ContainerAdministrator/Documents/WindowsPowerShell/Modules/CCCLenv/CCCLenv.psm1
 ADD scripts/profile.ps1  /Users/ContainerAdministrator/Documents/WindowsPowerShell/Microsoft.PowerShell_profile.ps1
-
-# Discard history to cleanup image
-FROM prebuildenv as buildenv
-
-# Add the environment hack script into the module load path
-# Exports Get-VsDevPrompt into powershell, allowing users to easily swap which version is loaded into the environment
