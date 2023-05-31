@@ -4,7 +4,7 @@ services:
     tty: true
     build:
       context: ./windows
-      dockerfile: ../msvc.dockerfile
+      dockerfile: ../windows.dockerfile
       args:
         MSVC_VER: &msvc2022 "17"
         ROOT_IMAGE: &server "mcr.microsoft.com/windows/servercore:ltsc2022"
@@ -14,7 +14,7 @@ services:
     tty: true
     build:
       context: ./windows
-      dockerfile: ../msvc.dockerfile
+      dockerfile: ../windows.dockerfile
       args:
         MSVC_VER: &msvc2019 "16"
         ROOT_IMAGE: *server
@@ -24,7 +24,7 @@ services:
     tty: true
     build:
       context: ./windows
-      dockerfile: ../msvc.dockerfile
+      dockerfile: ../windows.dockerfile
       args:
         MSVC_VER: &msvc2017 "15"
         ROOT_IMAGE: *server
@@ -35,7 +35,7 @@ services:
     tty: true
     build:
       context: ./windows
-      dockerfile: ../msvc.dockerfile
+      dockerfile: ../windows.dockerfile
       args:
         MSVC_VER: *msvc2022
         ROOT_IMAGE: &windows "mcr.microsoft.com/windows:ltsc2019"
@@ -46,7 +46,7 @@ services:
     tty: true
     build:
       context: ./windows
-      dockerfile: ../msvc.dockerfile
+      dockerfile: ../windows.dockerfile
       args:
         MSVC_VER: *msvc2019
         ROOT_IMAGE: *windows
@@ -57,7 +57,7 @@ services:
     tty: true
     build:
       context: ./windows
-      dockerfile: ../msvc.dockerfile
+      dockerfile: ../windows.dockerfile
       args:
         MSVC_VER: *msvc2017
         ROOT_IMAGE: *windows
