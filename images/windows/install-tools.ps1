@@ -8,7 +8,6 @@ Param(
 $ErrorActionPreference='Stop'
 Set-PSDebug -Trace 2
 
-
 ## Make sure the script is local to the directory here.
 Push-location "$PSScriptRoot"
 
