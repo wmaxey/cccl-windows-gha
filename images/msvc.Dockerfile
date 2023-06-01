@@ -1,16 +1,8 @@
-ARG ROOT_IMAGE="mcr.microsoft.com/windows/servercore:ltsc2022"
+ARG ROOT_IMAGE
 
-FROM $ROOT_IMAGE as prebuildenv
-
-SHELL ["powershell.exe"]
-ENTRYPOINT [ "powershell.exe" ]
+FROM $ROOT_IMAGE
 
 ARG MSVC_VER
+ARG MSVC_COMPILER_VER
 
-RUN Set-ExecutionPolicy Unrestricted -Scope CurrentUser
-ADD ./ /tools
-
-RUN /tools/configure.ps1 -msvcVersion $ENV:MSVC_VER
-
-ADD scripts/CCCLenv.psm1  /Users/ContainerAdministrator/Documents/WindowsPowerShell/Modules/CCCLenv/CCCLenv.psm1
-ADD scripts/profile.ps1  /Users/ContainerAdministrator/Documents/WindowsPowerShell/Microsoft.PowerShell_profile.ps1
+RUN /tools/install-compiler.ps1 -msvcVersion $ENV:MSVC_VER -clversion $ENV:MSVC_COMPILER_VER
