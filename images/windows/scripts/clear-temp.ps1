@@ -1,2 +1,2 @@
 # Delete temporary items created by installers and such
-# Remove-Item -Recurse $ENV:TEMP\*
+Remove-Item -Recurse $ENV:TEMP\*

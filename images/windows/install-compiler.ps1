@@ -11,7 +11,9 @@ Param(
 $ErrorActionPreference='Stop'
 Set-PSDebug -Trace 2
 
-## Install cl
+Push-location "$PSScriptRoot"
+
+## Install older vs cl
 ./scripts/install-cl.ps1 -msvcVersion $msvcVersion -clVersion $clVersion
 ./scripts/clear-temp.ps1
 

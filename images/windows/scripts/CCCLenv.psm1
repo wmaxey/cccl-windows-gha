@@ -31,6 +31,7 @@ $MSBuildPathMap = @{
     "14.33"="$MSBuildPath\17\VC\Auxiliary\Build"
     "14.34"="$MSBuildPath\17\VC\Auxiliary\Build"
     "14.35"="$MSBuildPath\17\VC\Auxiliary\Build"
+    "14.36"="$MSBuildPath\17\VC\Auxiliary\Build"
     "latest"="$MSBuildPath\$ENV:INSTALLED_MSVC_VERSION\VC\Auxiliary\Build"
 }
 
@@ -66,7 +67,7 @@ function Get-VSDevPrompt {
     $global:CC_FP = $(get-command cl).Source.Replace("\","/")
 
     Write-Host "`nVisual Studio Command Prompt variables set." -ForegroundColor Yellow
-    Write-Host "Use `$CC_FP as shortcut for Cmake: $CC_FP" -ForegroundColor Yellow
+    Write-Host "Use 'cl' or `$CC_FP as shortcut for Cmake: $CC_FP" -ForegroundColor Yellow
 }
 
 Export-ModuleMember -Function Get-VSDevPrompt
