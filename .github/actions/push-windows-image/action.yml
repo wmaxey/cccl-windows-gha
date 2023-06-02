@@ -18,4 +18,4 @@ runs:
       id: push
       shell: powershell
       run: |
-        $(pwd)\.github\actions\push-windows-image\action.ps1 -image ${{ inputs.image }} -vs ${{ inputs.vs_ver }}
+        .github\actions\push-windows-image\action.ps1 -image ${{ inputs.image }} -vs ${{ inputs.vs_ver }}

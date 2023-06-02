@@ -10,7 +10,7 @@ Param(
 
 Push-Location "$PSScriptRoot"
 
-./images/vs_version_matrix.ps1
+..\..\..\images\vs_version_matrix.ps1
 
 # Push baseline image
 docker push $image

@@ -8,8 +8,6 @@ Push-location "$PSScriptRoot"
 
 $ErrorActionPreference = "Stop"
 
-Get-VSDevPrompt
-
 Write-Output "Test Ninja"
 ninja --version
 TestReturnCode
