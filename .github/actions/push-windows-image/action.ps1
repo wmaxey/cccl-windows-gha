@@ -8,21 +8,17 @@ Param(
     $vs
 )
 
-function TestReturnCode {
-    if (-not $?) {
-        throw 'Step Failed'
-    }
-}
-
 Push-Location "$PSScriptRoot"
 
 ./images/vs_version_matrix.ps1
 
+# Push baseline image
+docker push $image
+
 $clList = $vsVersionMatrix["$vs"]
 foreach($cl in $clList) {
-    # Concatenate compiler version to image and test
-    docker run --mount type=bind,src=$(pwd),dst=C:\test $image-$cl "C:\test\.github\actions\test-windows-image\action.ps1"
-    TestReturnCode
+    # Concatenate compiler version to image and push
+    docker push $image-$cl
 }
 
 Pop-Location

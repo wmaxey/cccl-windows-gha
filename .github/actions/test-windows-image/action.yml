@@ -6,14 +6,16 @@ inputs:
     type: string
     required: true
     description: Image to test
+  vs_ver:
+    type: string
+    required: true
+    description: Version of VS to test
 
 runs:
   using: composite
   steps:
-
     - name: "Test ${{ inputs.image }}"
       id: image_test
       shell: powershell
       run: |
-        docker run --mount type=bind,src=$(pwd),dst=C:\test ${{ inputs.image }} `
-        "C:\test\.github\actions\test-windows-image\action.ps1"
+        $(pwd)\.github\actions\test-windows-image\action.ps1 -image ${{ inputs.image }} -vs ${{ inputs.vs_ver }}

@@ -23,7 +23,6 @@ outputs:
 runs:
   using: composite
   steps:
-
     - name: "Build ${{ inputs.repo }}:${{ inputs.service }}"
       id: build
       shell: powershell
@@ -32,5 +31,5 @@ runs:
         SERVICE: "${{ inputs.os }}-${{ inputs.vs_version }}"
         TAG: "${{ inputs.repo }}:${{ inputs.os }}-cuda-msvc-${{ inputs.vs_version }}"
       run: |
-        docker compose -f ./images/dockercompose.yml build $ENV:SERVICE --progress=plain
+        images/docker_build.ps1 -msvcVersion ${{ inputs.vs_version }}
         echo "image=$ENV:TAG" >> $ENV:GITHUB_OUTPUT

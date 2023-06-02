@@ -5,14 +5,17 @@ inputs:
   image:
     type: string
     required: true
-    description: Image to test
+    description: Image to push
+  vs_ver:
+    type: string
+    required: true
+    description: Version of VS to test
 
 runs:
   using: composite
   steps:
-
     - name: "Push ${{ inputs.image }}"
       id: push
       shell: powershell
       run: |
-        docker push ${{ inputs.image }}
+        $(pwd)\.github\actions\push-windows-image\action.ps1 -image ${{ inputs.image }} -vs ${{ inputs.vs_ver }}
