@@ -21,7 +21,7 @@ jobs:
         version: [2017, 2019, 2022]
 
     name: Build Windows Server images
-    steps: &build-steps
+    steps:
       - name: Checkout ${{ github.repository }}
         uses: actions/checkout@v3
         with:
@@ -63,4 +63,34 @@ jobs:
         version: [2017, 2019, 2022]
 
     name: Build Windows client images
-    steps: *build-steps
+    steps:
+      - name: Checkout ${{ github.repository }}
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Log in to registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+
+      - name: "Build image: ${{ matrix.edition }} + VS${{ matrix.version }}"
+        id: build_image
+        uses: ./.github/actions/build-windows-image
+        with:
+          repo: ghcr.io/${{ github.repository }}
+          os: ${{ matrix.edition }}
+          vs_version: "${{ matrix.version }}"
+
+      - name: "Test image: ${{ steps.build_image.outputs.image }}"
+        id: test_image
+        uses: ./.github/actions/test-windows-image
+        with:
+          image: "${{ steps.build_image.outputs.image }}"
+          vs_ver: "${{ matrix.version }}"
+
+      - name: "Push image: ${{ steps.build_image.outputs.image }}"
+        id: push_image
+        uses: ./.github/actions/push-windows-image
+        with:
+          image: "${{ steps.build_image.outputs.image }}"
+          vs_ver: "${{ matrix.version }}"
