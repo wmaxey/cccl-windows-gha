@@ -17,7 +17,7 @@ cl
 TestReturnCode
 
 Push-Location ~\
-echo "int main() {return 0;}" > .\test.cpp
+Write-Output "int main() {return 0;}" > .\test.cpp
 cl .\test.cpp
 TestReturnCode
 Pop-Location
@@ -31,7 +31,7 @@ nvcc --version
 TestReturnCode
 
 Push-Location ~
-echo "int main() {return 0;}" > .\test.cu
+Write-Output "int main() {return 0;}" > .\test.cu
 nvcc .\test.cu
 TestReturnCode
 Pop-Location

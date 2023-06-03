@@ -21,7 +21,7 @@ Push-Location "$PSScriptRoot"
 $clList = $vsVersionMatrix["$vs"]
 foreach($cl in $clList) {
     # Concatenate compiler version to image and test
-    docker run --mount type=bind,src=$(pwd),dst=C:\test $image-$cl "C:\test\.github\actions\test-windows-image\image-test.ps1"
+    docker run --mount type=bind,src=$(Get-Location),dst=C:\test $image-$cl "C:\test\image-test.ps1"
     TestReturnCode
 }
 
