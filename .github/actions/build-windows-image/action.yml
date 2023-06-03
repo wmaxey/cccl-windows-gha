@@ -31,5 +31,5 @@ runs:
         SERVICE: "${{ inputs.os }}-${{ inputs.vs_version }}"
         TAG: "${{ inputs.repo }}:${{ inputs.os }}-cuda-msvc-${{ inputs.vs_version }}"
       run: |
-        images/docker_build.ps1 -msvcVersion ${{ inputs.vs_version }} -edition ${{ inputs.os }}
+        images/docker-build.ps1 -msvcVersion ${{ inputs.vs_version }} -edition ${{ inputs.os }}
         echo "image=$ENV:TAG" >> $ENV:GITHUB_OUTPUT

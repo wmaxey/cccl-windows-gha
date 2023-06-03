@@ -14,15 +14,12 @@ function TestReturnCode {
     }
 }
 
-Push-Location "$PSScriptRoot"
-
-..\..\..\images\vs_version_matrix.ps1
+.\images\vs-version-matrix.ps1
 
 $clList = $vsVersionMatrix["$vs"]
 foreach($cl in $clList) {
+    Write-Output "Launching $image-$cl"
     # Concatenate compiler version to image and test
-    docker run --mount type=bind,src=$(Get-Location),dst=C:\test $image-$cl "C:\test\image-test.ps1"
+    docker run --mount type=bind,src="$(Get-Location)\.github\actions\test-windows-image",dst="C:\test" $image-$cl powershell "C:\test\image-test.ps1"
     TestReturnCode
 }
-
-Pop-Location
