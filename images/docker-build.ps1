@@ -1,12 +1,20 @@
+# msvcVersion, cudaVersion, OS edition, isolation mode
 Param(
     [Parameter(Mandatory=$true)]
     [ValidateSet('2017', '2019', '2022')]
     [string[]]
     $msvcVersion,
     [Parameter(Mandatory=$false)]
+    [string[]]
+    $cudaVersion="latest",
+    [Parameter(Mandatory=$false)]
     [ValidateSet('windows', 'windows-server')]
     [string[]]
-    $edition="windows"
+    $edition="windows",
+    [Parameter(Mandatory=$false)]
+    [ValidateSet('hyperv', 'process')]
+    [string[]]
+    $isolation="hyperv"
 )
 
 Push-location "$PSScriptRoot"

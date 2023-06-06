@@ -5,8 +5,9 @@ FROM $ROOT_IMAGE as prebuildenv
 SHELL ["powershell.exe"]
 
 ARG MSVC_VER
+ARG CUDA_VER
 
 RUN Set-ExecutionPolicy Unrestricted -Scope CurrentUser
 ADD ./ /tools
 
-RUN /tools/install-tools.ps1 -msvcVersion $ENV:MSVC_VER
+RUN /tools/install-tools.ps1 -msvcVersion $ENV:MSVC_VER -cudaVersion $ENV:CUDA_VER

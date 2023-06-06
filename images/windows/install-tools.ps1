@@ -2,7 +2,10 @@ Param(
     [Parameter(Mandatory=$true)]
     [ValidateSet('15', '16', '17')]
     [string[]]
-    $msvcVersion
+    $msvcVersion,
+    [Parameter(Mandatory=$true)]
+    [string[]]
+    $cudaVersion
 )
 
 $ErrorActionPreference='Stop'
@@ -12,7 +15,7 @@ Set-PSDebug -Trace 2
 Push-location "$PSScriptRoot"
 
 ## Source and install the below
-./scripts/install-cuda.ps1
+./scripts/install-cuda.ps1 -cudaVersion $cudaVersion
 ./scripts/install-lit.ps1
 ./scripts/install-cmake.ps1
 ./scripts/install-ninja.ps1

@@ -14,7 +14,7 @@ Set-PSDebug -Trace 2
 Push-location "$PSScriptRoot"
 
 ## Install older vs cl
-./scripts/install-cl.ps1 -msvcVersion $msvcVersion -clVersion $clVersion
+./scripts/install-vs.ps1 -msvcVersion $msvcVersion -clVersion $clVersion
 ./scripts/clear-temp.ps1
 
 Pop-Location
