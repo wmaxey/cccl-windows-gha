@@ -1,9 +1,8 @@
 # msvcVersion, cudaVersion, OS edition, isolation mode
 Param(
     [Parameter(Mandatory=$true)]
-    [ValidateSet('2017', '2019', '2022')]
     [string[]]
-    $msvcVersion,
+    $clVersion,
     [Parameter(Mandatory=$false)]
     [string[]]
     $cudaVersion="latest",
@@ -19,21 +18,34 @@ Param(
 
 Push-location "$PSScriptRoot"
 
+$rootWindowsImage = @{
+    "windows-server" = "mcr.microsoft.com/windows/servercore:ltsc2022"
+    "windows" = "mcr.microsoft.com/windows:ltsc2019"
+}[$edition]
+
 try {
     # Source version matrix
     .\vs-version-matrix.ps1
 
-    docker compose -f .\docker-compose.yml build $edition-$msvcVersion --progress=plain
+    $vsVer = $vsYearToVer[$vsCompilersToYear[$clVersion]]
+    # Override defaults in .env.
+    $ENV:IMAGE_NAME="${edition}-${isolation}-cuda-${cudaVersion}-cl-${clVersion}"
+    $ENV:ISOLATION="$isolation"
+    $ENV:MSVC_VER="$vsVer"
+    $ENV:MSVC_COMPILER_VER="$clVersion"
+    $ENV:CUDA_VER="$cudaVersion"
+    $ENV:ROOT_IMAGE="$rootWindowsImage"
 
-    # Build each subcompiler version
-    $clList = $vsVersionMatrix["$msvcVersion"]
-    foreach($cl in $clList) {
-        Write-Output "Building $msvcVersion - $cl"
-        # Override defaults in .env.
-        $ENV:WIN_IMAGE=$edition
-        $ENV:MSVC_COMPILER_VER=$cl
-        docker compose -f .\docker-compose.cl.yml build windows-extend-$msvcVersion --progress=plain
-    }
+    Write-Output "Building $ENV:IMAGE_NAME"
+    Write-Output "with args:"
+    Write-Output "ENV:IMAGE_NAME         $ENV:IMAGE_NAME"
+    Write-Output "ENV:ISOLATION          $ENV:ISOLATION"
+    Write-Output "ENV:MSVC_VER           $ENV:MSVC_VER"
+    Write-Output "ENV:MSVC_COMPILER_VER  $ENV:MSVC_COMPILER_VER"
+    Write-Output "ENV:CUDA_VER           $ENV:CUDA_VER"
+    Write-Output "ENV:ROOT_IMAGE         $ENV:ROOT_IMAGE"
+
+    docker compose -f .\docker-compose.yml build windows --progress=plain
 }
 catch {
     Pop-Location

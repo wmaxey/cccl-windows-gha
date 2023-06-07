@@ -1,63 +1,13 @@
 services:
-  windows-server-2022:
-    image: "$REPO:windows-server-cuda-msvc-2022"
+  windows:
+    isolation: "$ISOLATION"
+    image: "$REPO:$IMAGE_NAME"
     tty: true
     build:
       context: ./windows
       dockerfile: ../windows.dockerfile
       args:
-        MSVC_VER: &msvc2022 "17"
-        ROOT_IMAGE: &server "mcr.microsoft.com/windows/servercore:ltsc2022"
-
-  windows-server-2019:
-    image: "$REPO:windows-server-cuda-msvc-2019"
-    tty: true
-    build:
-      context: ./windows
-      dockerfile: ../windows.dockerfile
-      args:
-        MSVC_VER: &msvc2019 "16"
-        ROOT_IMAGE: *server
-
-  windows-server-2017:
-    image: "$REPO:windows-server-cuda-msvc-2017"
-    tty: true
-    build:
-      context: ./windows
-      dockerfile: ../windows.dockerfile
-      args:
-        MSVC_VER: &msvc2017 "15"
-        ROOT_IMAGE: *server
-
-  windows-2022:
-    isolation: 'hyperv'
-    image: "$REPO:windows-cuda-msvc-2022"
-    tty: true
-    build:
-      context: ./windows
-      dockerfile: ../windows.dockerfile
-      args:
-        MSVC_VER: *msvc2022
-        ROOT_IMAGE: &windows "mcr.microsoft.com/windows:ltsc2019"
-
-  windows-2019:
-    isolation: 'hyperv'
-    image: "$REPO:windows-cuda-msvc-2019"
-    tty: true
-    build:
-      context: ./windows
-      dockerfile: ../windows.dockerfile
-      args:
-        MSVC_VER: *msvc2019
-        ROOT_IMAGE: *windows
-
-  windows-2017:
-    isolation: 'hyperv'
-    image: "$REPO:windows-cuda-msvc-2017"
-    tty: true
-    build:
-      context: ./windows
-      dockerfile: ../windows.dockerfile
-      args:
-        MSVC_VER: *msvc2017
-        ROOT_IMAGE: *windows
+        MSVC_VER: "$MSVC_VER"
+        MSVC_COMPILER_VER: "$MSVC_COMPILER_VER"
+        CUDA_VER: "$CUDA_VER"
+        ROOT_IMAGE: "$ROOT_IMAGE"

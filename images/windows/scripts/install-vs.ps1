@@ -27,13 +27,16 @@ $vsComponentsMap = @{
 }
 
 # Always install/update core VC tools
-$vsComponentString = "--add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --add $vsComponentsMap[$msvcVersion]"
+$vsComponent = $vsComponentsMap[$msvcVersion]
+$vsComponentString = "--add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --add $vsComponent"
 
 if ($clVersion) {
-    $vsComponentString = "$vsComponentString --add $vsComponentsMap[$clVersion]"
+    $clComponent = $vsComponentsMap[$clVersion]
+    $vsComponentString = "$vsComponentString --add $clComponent"
 }
 
 Invoke-WebRequest -Uri "https://aka.ms/vs/$msvcVersion/release/vs_buildtools.exe" -UseBasicParsing -OutFile .\vs_buildtools.exe
+Write-Output "Installing components: $vsComponentString"
 Start-Process -NoNewWindow -PassThru -Wait -FilePath .\vs_buildtools.exe -ArgumentList "install --installWhileDownloading --installPath $msvcPath --wait --norestart --nocache --quiet $vsComponentString"
 
 Remove-Item .\vs_buildtools.exe
