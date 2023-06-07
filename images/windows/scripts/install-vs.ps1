@@ -1,10 +1,10 @@
 Param(
     [Parameter(Mandatory=$true)]
     [ValidateSet('15', '16', '17')]
-    [string[]]
+    [string]
     $msvcVersion,
     [Parameter(Mandatory=$false)]
-    [string[]]
+    [string]
     $clVersion
 )
 

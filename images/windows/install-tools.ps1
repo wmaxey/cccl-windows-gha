@@ -1,6 +1,6 @@
 Param(
     [Parameter(Mandatory=$true)]
-    [string[]]
+    [string]
     $cudaVersion
 )
 
@@ -16,7 +16,7 @@ Push-location "$PSScriptRoot"
 ./scripts/install-ninja.ps1
 
 ## Save the current environment without MSVC plugged in
-New-Item -ItemType Directory -Path "$HOME" -Name "cccl_env"
+New-Item -ItemType Directory -Path "$HOME" -Name "build-env"
 
 # Filter these non-portable exported environment variables
 $envFilter = `
@@ -25,7 +25,7 @@ $envFilter = `
     "PROCESSOR_IDENTIFIER","PROCESSOR_LEVEL","PROCESSOR_REVISION","OS"
 
 $ENV:INSTALLED_MSVC_VERSION=$msvcVersion
-Get-ChildItem ENV: | Where-Object { $_.Name -notin $envFilter } | Export-CliXml "$HOME\cccl_env\env-var.clixml"
+Get-ChildItem ENV: | Where-Object { $_.Name -notin $envFilter } | Export-CliXml "$HOME\build-env\env-var.clixml"
 
 ./scripts/clear-temp.ps1
 

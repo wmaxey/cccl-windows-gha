@@ -1,4 +1,4 @@
-$EnvVarBackup = (Resolve-Path -path "$HOME\cccl_env\env-var.clixml" | % {$_ -replace '\\','/'})
+$EnvVarBackup = (Resolve-Path -path "$HOME\build-env\env-var.clixml" | % {$_ -replace '\\','/'})
 # Import the pre-configured environment
 Import-CliXml $EnvVarBackup | % { Set-Item -force -path "env:$($_.Name)" $_.Value }
 

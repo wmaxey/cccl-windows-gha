@@ -1,19 +1,22 @@
 # msvcVersion, cudaVersion, OS edition, isolation mode
 Param(
     [Parameter(Mandatory=$true)]
-    [string[]]
+    [string]
     $clVersion,
     [Parameter(Mandatory=$false)]
-    [string[]]
+    [string]
     $cudaVersion="latest",
     [Parameter(Mandatory=$false)]
     [ValidateSet('windows', 'windows-server')]
-    [string[]]
+    [string]
     $edition="windows",
     [Parameter(Mandatory=$false)]
     [ValidateSet('hyperv', 'process')]
-    [string[]]
-    $isolation="hyperv"
+    [string]
+    $isolation="hyperv",
+    [Parameter(Mandatory=$false)]
+    [string]
+    $repo="local"
 )
 
 Push-location "$PSScriptRoot"
@@ -29,7 +32,7 @@ try {
 
     $vsVer = $vsYearToVer[$vsCompilersToYear[$clVersion]]
     # Override defaults in .env.
-    $ENV:IMAGE_NAME="${edition}-${isolation}-cuda-${cudaVersion}-cl-${clVersion}"
+    $ENV:IMAGE_NAME="$(.\generate-image-name.ps1 -clVersion $clVersion -isolation $isolation -cudaVersion $cudaVersion -edition $edition -repo $repo)"
     $ENV:ISOLATION="$isolation"
     $ENV:MSVC_VER="$vsVer"
     $ENV:MSVC_COMPILER_VER="$clVersion"

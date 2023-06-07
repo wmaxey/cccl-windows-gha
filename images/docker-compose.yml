@@ -1,7 +1,7 @@
 services:
   windows:
     isolation: "$ISOLATION"
-    image: "$REPO:$IMAGE_NAME"
+    image: "$IMAGE_NAME"
     tty: true
     build:
       context: ./windows

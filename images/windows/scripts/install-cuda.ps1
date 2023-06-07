@@ -1,6 +1,6 @@
 Param(
     [Parameter(Mandatory=$false)]
-    [string[]]
+    [string]
     $cudaVersion="latest"
 )
 
