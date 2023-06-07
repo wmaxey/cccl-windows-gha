@@ -35,6 +35,12 @@ if ($clVersion) {
     $vsComponentString = "$vsComponentString --add $clComponent"
 }
 
+# 14.16 alone does not install build tools
+if ($clVersion -eq "14.16") {
+    $clComponent = $vsComponentsMap["14.15"]
+    $vsComponentString = "$vsComponentString --add $clComponent"
+}
+
 Invoke-WebRequest -Uri "https://aka.ms/vs/$msvcVersion/release/vs_buildtools.exe" -UseBasicParsing -OutFile .\vs_buildtools.exe
 Write-Output "Installing components: $vsComponentString"
 Start-Process -NoNewWindow -PassThru -Wait -FilePath .\vs_buildtools.exe -ArgumentList "install --installWhileDownloading --installPath $msvcPath --wait --norestart --nocache --quiet $vsComponentString"

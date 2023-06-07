@@ -19,7 +19,7 @@ $componentTag = @{
     "12.1.0"="12.1"
     "12.1.1"="12.1"
     "latest"="12.1"
-}
+}[$cudaVersion]
 
 $cudaVersionUrl = "https://developer.download.nvidia.com/compute/cuda/$cudaUri"
 
