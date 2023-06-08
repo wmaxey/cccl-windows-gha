@@ -8,13 +8,10 @@ Param(
     $cudaVersion="latest",
     [Parameter(Mandatory=$false)]
     [string]
-    $edition="windows",
-    [Parameter(Mandatory=$false)]
-    [string]
-    $isolation="hyperv",
+    $edition,
     [Parameter(Mandatory=$true)]
     [string]
     $repo
 )
 
-Write-Output "${repo}:${edition}-${isolation}-cuda-${cudaVersion}-cl-${clVersion}"
+Write-Output "${repo}:${edition}-cuda-${cudaVersion}-cl-${clVersion}"

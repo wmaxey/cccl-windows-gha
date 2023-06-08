@@ -29,7 +29,7 @@ $ErrorActionPreference = "Stop"
 $clVerArray = ($vsVerToCompilers[$msvcVersion])
 
 foreach($cl in $clVerArray) {
-    $image=$(./images/generate-image-name -clVersion $cl -isolation $isolation -cudaVersion $cudaVersion -edition $edition -repo $repo)
+    $image=$(./images/generate-image-name -clVersion $cl -cudaVersion $cudaVersion -edition $edition -repo $repo)
     Write-Output "Testing $image"
 
     docker run --mount type=bind,src="$(Get-Location)\.github\actions\test-windows-image",dst="C:\test" $image powershell "C:\test\image-test.ps1"

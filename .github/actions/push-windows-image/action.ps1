@@ -23,7 +23,7 @@ $ErrorActionPreference = "Stop"
 $clVerArray = ($vsVerToCompilers[$msvcVersion])
 
 foreach($cl in $clVerArray) {
-    $image=$(./images/generate-image-name -clVersion $cl -isolation $isolation -cudaVersion $cudaVersion -edition $edition -repo $repo)
+    $image=$(./images/generate-image-name -clVersion $cl -cudaVersion $cudaVersion -edition $edition -repo $repo)
     Write-Output "Pushing $image"
 
     docker push $image

@@ -18,19 +18,15 @@ jobs:
       matrix:
         runner: [windows-2019, windows-2022]
         cuda_version: ["12.1", "11.1"]
-        isolation: [process, hyperv]
-        edition: [windows-server, windows-10]
+        edition: [windows-2019, windows-2022]
         vs_version: ["2017", "2019", "2022"]
         exclude:
           # https://learn.microsoft.com/en-us/virtualization/windowscontainers/deploy-containers/version-compatibility
           # Exclude Incompatible windows builds
           - runner: windows-2019
-            edition: windows-server
+            edition: windows-2022
           - runner: windows-2022
-            edition: windows-10
-          # No configuration of windows 10 supports process isolation
-          - edition: windows-10
-            isolation: process
+            edition: windows-2019
           # Exclude MSVC 2022 and 11.1 as it is unsupported
           - vs_version: "2022"
             cuda_version: "11.1"
@@ -40,4 +36,3 @@ jobs:
       win_edition: ${{ matrix.edition }}
       vs_version: ${{ matrix.vs_version }}
       cuda_version: ${{ matrix.cuda_version }}
-      isolation: ${{ matrix.isolation }}

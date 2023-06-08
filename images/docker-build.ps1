@@ -7,7 +7,7 @@ Param(
     [string]
     $cudaVersion="latest",
     [Parameter(Mandatory=$false)]
-    [ValidateSet('windows-10', 'windows-server')]
+    [ValidateSet('windows-2019', 'windows-2022')]
     [string]
     $edition="windows",
     [Parameter(Mandatory=$false)]
@@ -22,8 +22,8 @@ Param(
 Push-location "$PSScriptRoot"
 
 $rootWindowsImage = @{
-    "windows-server" = "mcr.microsoft.com/windows/servercore:ltsc2022"
-    "windows-10" = "mcr.microsoft.com/windows/servercore:ltsc2019"
+    "windows-2022" = "mcr.microsoft.com/windows/servercore:ltsc2022"
+    "windows-2019" = "mcr.microsoft.com/windows/servercore:ltsc2019"
 }[$edition]
 
 try {
@@ -32,7 +32,7 @@ try {
 
     $vsVer = $vsYearToVer[$vsCompilersToYear[$clVersion]]
     # Override defaults in .env.
-    $ENV:IMAGE_NAME="$(.\generate-image-name.ps1 -clVersion $clVersion -isolation $isolation -cudaVersion $cudaVersion -edition $edition -repo $repo)"
+    $ENV:IMAGE_NAME="$(.\generate-image-name.ps1 -clVersion $clVersion -cudaVersion $cudaVersion -edition $edition -repo $repo)"
     $ENV:ISOLATION="$isolation"
     $ENV:MSVC_VER="$vsVer"
     $ENV:MSVC_COMPILER_VER="$clVersion"
