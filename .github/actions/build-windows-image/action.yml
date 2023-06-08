@@ -23,15 +23,10 @@ inputs:
     required: true
     description: CUDA version
 
-outputs:
-  image:
-    description: URL of tagged and pushed image
-    value: ${{ steps.build.outputs.image }}
-
 runs:
   using: composite
   steps:
-    - name: "Build ${{ inputs.repo }}:${{ inputs.service }}"
+    - name: Run action script to build images
       id: build
       shell: powershell
       run: |

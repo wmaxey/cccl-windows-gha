@@ -19,18 +19,26 @@ jobs:
         runner: [windows-2019, windows-2022]
         cuda_version: ["12.1", "11.1"]
         isolation: [process, hyperv]
-        edition: [windows-server, windows]
+        edition: [windows-server, windows-10, windows-11]
         vs_version: ["2017", "2019", "2022"]
         exclude:
-            # Exclude Server 2019 builds
+          # https://learn.microsoft.com/en-us/virtualization/windowscontainers/deploy-containers/version-compatibility
+          # Exclude Incompatible windows builds
           - runner: windows-2019
             edition: windows-server
-            # Exclude MSVC 2022 and 11.1 as it is unsupported
+          - runner: windows-2019
+            edition: windows-11
+          - runner: windows-2022
+            edition: windows-10
+          # No configuration of windows 10 supports process isolation
+          - edition: windows-10
+            isolation: process
+          # Exclude MSVC 2022 and 11.1 as it is unsupported
           - vs_version: "2022"
             cuda_version: "11.1"
-            # No configuration of windows supports process isolation
-          - edition: windows
-            isolation: process
+          # Exclude Windows 11 and CUDA 11.1
+          - edition: windows-11
+            cuda_version: "11.1"
     uses: ./.github/workflows/windows_build.yml
     with:
       runner: ${{ matrix.runner }}
@@ -38,78 +46,3 @@ jobs:
       vs_version: ${{ matrix.vs_version }}
       cuda_version: ${{ matrix.cuda_version }}
       isolation: ${{ matrix.isolation }}
-
-##    name: Build Windows Server images
-##    steps:
-##      - name: Checkout ${{ github.repository }}
-##        uses: actions/checkout@v3
-##        with:
-##          fetch-depth: 0
-##          persist-credentials: false
-##
-##      - name: Log in to registry
-##        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
-##
-##      - name: "Build image: ${{ matrix.edition }} + VS${{ matrix.version }}"
-##        id: build_image
-##        uses: ./.github/actions/build-windows-image
-##        with:
-##          repo: ghcr.io/${{ github.repository }}
-##          os: ${{ matrix.edition }}
-##          vs_version: "${{ matrix.version }}"
-##
-##      - name: "Test image: ${{ steps.build_image.outputs.image }}"
-##        id: test_image
-##        uses: ./.github/actions/test-windows-image
-##        with:
-##          image: "${{ steps.build_image.outputs.image }}"
-##          vs_ver: "${{ matrix.version }}"
-##
-##      - name: "Push image: ${{ steps.build_image.outputs.image }}"
-##        id: push_image
-##        uses: ./.github/actions/push-windows-image
-##        with:
-##          image: "${{ steps.build_image.outputs.image }}"
-##          vs_ver: "${{ matrix.version }}"
-##
-##  build-windows-client:
-##    # Only Windows 2019 supports building Windows 10 images in hyper-v
-##    runs-on: windows-2019
-##    strategy:
-##      fail-fast: false
-##      matrix:
-##        edition: [windows]
-##        version: [2017, 2019, 2022]
-##
-##    name: Build Windows client images
-##    steps:
-##      - name: Checkout ${{ github.repository }}
-##        uses: actions/checkout@v3
-##        with:
-##          fetch-depth: 0
-##          persist-credentials: false
-##
-##      - name: Log in to registry
-##        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
-##
-##      - name: "Build image: ${{ matrix.edition }} + VS${{ matrix.version }}"
-##        id: build_image
-##        uses: ./.github/actions/build-windows-image
-##        with:
-##          repo: ghcr.io/${{ github.repository }}
-##          os: ${{ matrix.edition }}
-##          vs_version: "${{ matrix.version }}"
-##
-##      - name: "Test image: ${{ steps.build_image.outputs.image }}"
-##        id: test_image
-##        uses: ./.github/actions/test-windows-image
-##        with:
-##          image: "${{ steps.build_image.outputs.image }}"
-##          vs_ver: "${{ matrix.version }}"
-##
-##      - name: "Push image: ${{ steps.build_image.outputs.image }}"
-##        id: push_image
-##        uses: ./.github/actions/push-windows-image
-##        with:
-##          image: "${{ steps.build_image.outputs.image }}"
-##          vs_ver: "${{ matrix.version }}"
