@@ -19,15 +19,13 @@ jobs:
         runner: [windows-2019, windows-2022]
         cuda_version: ["12.1", "11.1"]
         isolation: [process, hyperv]
-        edition: [windows-server, windows-10, windows-11]
+        edition: [windows-server, windows-10]
         vs_version: ["2017", "2019", "2022"]
         exclude:
           # https://learn.microsoft.com/en-us/virtualization/windowscontainers/deploy-containers/version-compatibility
           # Exclude Incompatible windows builds
           - runner: windows-2019
             edition: windows-server
-          - runner: windows-2019
-            edition: windows-11
           - runner: windows-2022
             edition: windows-10
           # No configuration of windows 10 supports process isolation
@@ -35,9 +33,6 @@ jobs:
             isolation: process
           # Exclude MSVC 2022 and 11.1 as it is unsupported
           - vs_version: "2022"
-            cuda_version: "11.1"
-          # Exclude Windows 11 and CUDA 11.1
-          - edition: windows-11
             cuda_version: "11.1"
     uses: ./.github/workflows/windows_build.yml
     with:

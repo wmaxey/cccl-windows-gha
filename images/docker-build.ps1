@@ -7,7 +7,7 @@ Param(
     [string]
     $cudaVersion="latest",
     [Parameter(Mandatory=$false)]
-    [ValidateSet('windows-10', 'windows-11', 'windows-server')]
+    [ValidateSet('windows-10', 'windows-server')]
     [string]
     $edition="windows",
     [Parameter(Mandatory=$false)]
@@ -24,7 +24,6 @@ Push-location "$PSScriptRoot"
 $rootWindowsImage = @{
     "windows-server" = "mcr.microsoft.com/windows/servercore:ltsc2022"
     "windows-10" = "mcr.microsoft.com/windows:ltsc2019"
-    "windows-11" = "mcr.microsoft.com/windows:ltsc2022"
 }[$edition]
 
 try {
