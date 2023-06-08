@@ -23,7 +23,7 @@ Push-location "$PSScriptRoot"
 
 $rootWindowsImage = @{
     "windows-server" = "mcr.microsoft.com/windows/servercore:ltsc2022"
-    "windows-10" = "mcr.microsoft.com/windows:ltsc2019"
+    "windows-10" = "mcr.microsoft.com/windows/servercore:ltsc2019"
 }[$edition]
 
 try {
