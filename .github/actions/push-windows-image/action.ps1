@@ -1,20 +1,33 @@
 Param(
     [Parameter(Mandatory=$true)]
-    [string[]]
-    $image,
-    [Parameter(Mandatory=$true)]
     [ValidateSet('2017', '2019', '2022')]
-    [string[]]
-    $vs
+    [string]
+    $msvcVersion,
+    [Parameter(Mandatory=$true)]
+    [string]
+    $cudaVersion="latest",
+    [Parameter(Mandatory=$true)]
+    [ValidateSet('windows', 'windows-server')]
+    [string]
+    $edition="windows",
+    [Parameter(Mandatory=$true)]
+    [ValidateSet('hyperv', 'process')]
+    [string]
+    $isolation="hyperv",
+    [Parameter(Mandatory=$true)]
+    [string]
+    $repo
 )
 
-.\images\vs-version-matrix.ps1
+$ErrorActionPreference = "Stop"
 
-# Push baseline image
-docker push $image
+# Assume this script is launched from repo root.
+./images/vs-version-matrix.ps1
+$clVerArray = ($vsVerToCompilers[$msvcVersion])
 
-$clList = $vsVersionMatrix["$vs"]
-foreach($cl in $clList) {
-    # Concatenate compiler version to image and push
-    docker push $image-$cl
+foreach($cl in $clVerArray) {
+    $image=$(./images/generate-image-name -clVersion $cl -isolation $isolation -cudaVersion $cudaVersion -edition $edition -repo $repo)
+    Write-Output "Pushing $image"
+
+    docker push $image
 }

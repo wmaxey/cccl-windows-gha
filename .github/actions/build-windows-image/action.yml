@@ -6,14 +6,22 @@ inputs:
     type: string
     required: true
     description: Image repository
-  os:
+  win_edition:
     type: string
     required: true
     description: Windows edition
+  isolation:
+    type: string
+    required: true
+    description: Which Windows isolation mode to build for
   vs_version:
     type: string
     required: true
     description: MSVC version
+  cuda_version:
+    type: string
+    required: true
+    description: CUDA version
 
 outputs:
   image:
@@ -31,5 +39,9 @@ runs:
         SERVICE: "${{ inputs.os }}-${{ inputs.vs_version }}"
         TAG: "${{ inputs.repo }}:${{ inputs.os }}-cuda-msvc-${{ inputs.vs_version }}"
       run: |
-        images/docker-build.ps1 -msvcVersion ${{ inputs.vs_version }} -edition ${{ inputs.os }}
-        echo "image=$ENV:TAG" >> $ENV:GITHUB_OUTPUT
+        .github/actions/build-windows-image/action.ps1 `
+          -cudaVersion ${{ inputs.cuda_version }}      `
+          -msvcVersion ${{ inputs.vs_version }}        `
+          -edition ${{ inputs.os }}                    `
+          -isolation ${{ inputs.isolation }}           `
+          -repo ${{ inputs.repo }}

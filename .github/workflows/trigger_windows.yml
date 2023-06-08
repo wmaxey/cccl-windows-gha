@@ -1,0 +1,114 @@
+name: Build Windows Images
+
+on:
+  push:
+    paths: [.github/**, images/**]
+    branches: [ "main" ]
+  pull_request:
+    paths: [.github/**, images/**]
+    branches: [ "main" ]
+
+  workflow_dispatch:
+
+jobs:
+  dispatch-builder-job:
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [windows-2019, windows-2022]
+        cuda-version: ["12.1", "11.1"]
+        isolation: [process, hyperv]
+        edition: [windows-server, windows]
+        vs-version: ["2017", "2019", "2022"]
+        exclude:
+            # Exclude Server 2019 builds
+          - runner: windows-2019
+            edition: windows-server
+            # Exclude MSVC 2022 and 11.1 as it is unsupported
+          - vs-version: "2022"
+            cuda-version: "11.1"
+            # No configuration of windows supports process isolation
+          - edition: windows
+            isolation: process
+    uses: ${{ github.repository }}/.github/workflows/windows_build.yml@main
+    with:
+      runner: ghcr.io/${{ github.repository }}
+      win_edition: ${{ matrix.win_edition }}
+      vs_version: ${{ matrix.vs_version }}
+      cuda_version: ${{ matrix.cuda_version }}
+      isolation: ${{ matrix.isolation }}
+
+##    name: Build Windows Server images
+##    steps:
+##      - name: Checkout ${{ github.repository }}
+##        uses: actions/checkout@v3
+##        with:
+##          fetch-depth: 0
+##          persist-credentials: false
+##
+##      - name: Log in to registry
+##        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+##
+##      - name: "Build image: ${{ matrix.edition }} + VS${{ matrix.version }}"
+##        id: build_image
+##        uses: ./.github/actions/build-windows-image
+##        with:
+##          repo: ghcr.io/${{ github.repository }}
+##          os: ${{ matrix.edition }}
+##          vs_version: "${{ matrix.version }}"
+##
+##      - name: "Test image: ${{ steps.build_image.outputs.image }}"
+##        id: test_image
+##        uses: ./.github/actions/test-windows-image
+##        with:
+##          image: "${{ steps.build_image.outputs.image }}"
+##          vs_ver: "${{ matrix.version }}"
+##
+##      - name: "Push image: ${{ steps.build_image.outputs.image }}"
+##        id: push_image
+##        uses: ./.github/actions/push-windows-image
+##        with:
+##          image: "${{ steps.build_image.outputs.image }}"
+##          vs_ver: "${{ matrix.version }}"
+##
+##  build-windows-client:
+##    # Only Windows 2019 supports building Windows 10 images in hyper-v
+##    runs-on: windows-2019
+##    strategy:
+##      fail-fast: false
+##      matrix:
+##        edition: [windows]
+##        version: [2017, 2019, 2022]
+##
+##    name: Build Windows client images
+##    steps:
+##      - name: Checkout ${{ github.repository }}
+##        uses: actions/checkout@v3
+##        with:
+##          fetch-depth: 0
+##          persist-credentials: false
+##
+##      - name: Log in to registry
+##        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+##
+##      - name: "Build image: ${{ matrix.edition }} + VS${{ matrix.version }}"
+##        id: build_image
+##        uses: ./.github/actions/build-windows-image
+##        with:
+##          repo: ghcr.io/${{ github.repository }}
+##          os: ${{ matrix.edition }}
+##          vs_version: "${{ matrix.version }}"
+##
+##      - name: "Test image: ${{ steps.build_image.outputs.image }}"
+##        id: test_image
+##        uses: ./.github/actions/test-windows-image
+##        with:
+##          image: "${{ steps.build_image.outputs.image }}"
+##          vs_ver: "${{ matrix.version }}"
+##
+##      - name: "Push image: ${{ steps.build_image.outputs.image }}"
+##        id: push_image
+##        uses: ./.github/actions/push-windows-image
+##        with:
+##          image: "${{ steps.build_image.outputs.image }}"
+##          vs_ver: "${{ matrix.version }}"

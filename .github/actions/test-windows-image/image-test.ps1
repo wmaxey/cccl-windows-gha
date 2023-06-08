@@ -4,10 +4,10 @@ function TestReturnCode {
     }
 }
 
+$ErrorActionPreference = "Stop"
+
 Push-location "$ENV:TEMP"
 try {
-    $ErrorActionPreference = "Stop"
-
     Write-Output "Test Ninja"
     ninja --version
     TestReturnCode

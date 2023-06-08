@@ -1,15 +1,27 @@
-name: "Build and push Windows images"
-description: "Builds wcow images with MSVC and CUDA"
+name: "Push Windows images"
+description: "Push tested windows images"
 
 inputs:
-  image:
+  repo:
     type: string
     required: true
-    description: Image to push
-  vs_ver:
+    description: Image repository
+  win_edition:
     type: string
     required: true
-    description: Version of VS to test
+    description: Windows edition
+  isolation:
+    type: string
+    required: true
+    description: Which Windows isolation mode to build for
+  vs_version:
+    type: string
+    required: true
+    description: MSVC version
+  cuda_version:
+    type: string
+    required: true
+    description: CUDA version
 
 runs:
   using: composite
@@ -18,4 +30,9 @@ runs:
       id: push
       shell: powershell
       run: |
-        .github\actions\push-windows-image\action.ps1 -image ${{ inputs.image }} -vs ${{ inputs.vs_ver }}
+        .github\actions\push-windows-image\action.ps1  `
+          -cudaVersion ${{ inputs.cuda_version }}      `
+          -msvcVersion ${{ inputs.vs_version }}        `
+          -edition ${{ inputs.os }}                    `
+          -isolation ${{ inputs.isolation }}           `
+          -repo ${{ inputs.repo }}

@@ -19,22 +19,12 @@ Param(
     $repo
 )
 
-function TestReturnCode {
-    if (-not $?) {
-        throw 'Step Failed'
-    }
-}
-
 $ErrorActionPreference = "Stop"
 
 # Assume this script is launched from repo root.
 ./images/vs-version-matrix.ps1
-$clVerArray = ($vsVerToCompilers[$msvcVersion])
+$clVerArray = $vsVerToCompilers[$msvcVersion]
 
-foreach($cl in $clVerArray) {
-    $image=$(./images/generate-image-name -clVersion $cl -isolation $isolation -cudaVersion $cudaVersion -edition $edition -repo $repo)
-    Write-Output "Testing $image"
-
-    docker run --mount type=bind,src="$(Get-Location)\.github\actions\test-windows-image",dst="C:\test" $image powershell "C:\test\image-test.ps1"
-    TestReturnCode
+foreach ($cl in $clVerArray) {
+    ./images/docker-build.ps1 -clVersion $cl -isolation $isolation -cudaVersion $cudaVersion -edition $edition -repo $repo
 }
