@@ -12,28 +12,29 @@ on:
 
 jobs:
   dispatch-builder-job:
+    name: Build Windows Image
     strategy:
       fail-fast: false
       matrix:
         runner: [windows-2019, windows-2022]
-        cuda-version: ["12.1", "11.1"]
+        cuda_version: ["12.1", "11.1"]
         isolation: [process, hyperv]
         edition: [windows-server, windows]
-        vs-version: ["2017", "2019", "2022"]
+        vs_version: ["2017", "2019", "2022"]
         exclude:
             # Exclude Server 2019 builds
           - runner: windows-2019
             edition: windows-server
             # Exclude MSVC 2022 and 11.1 as it is unsupported
-          - vs-version: "2022"
-            cuda-version: "11.1"
+          - vs_version: "2022"
+            cuda_version: "11.1"
             # No configuration of windows supports process isolation
           - edition: windows
             isolation: process
-    uses: ${{ github.repository }}/.github/workflows/windows_build.yml@main
+    uses: ./.github/workflows/windows_build.yml
     with:
-      runner: ghcr.io/${{ github.repository }}
-      win_edition: ${{ matrix.win_edition }}
+      runner: ${{ matrix.runner }}
+      win_edition: ${{ matrix.edition }}
       vs_version: ${{ matrix.vs_version }}
       cuda_version: ${{ matrix.cuda_version }}
       isolation: ${{ matrix.isolation }}

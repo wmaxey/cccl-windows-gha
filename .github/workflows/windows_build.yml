@@ -25,7 +25,7 @@ on:
 jobs:
   build_windows_image:
     runs-on: ${{ inputs.runner }}
-    name: "Build image: ${{ inputs.win_edition }} + ${{ inputs.isolation }} + VS${{ vs_version }} + CUDA ${{ inputs.cuda_version }}"
+    name: "Build image: ${{ inputs.win_edition }} + ${{ inputs.isolation }} + VS${{ inputs.vs_version }} + CUDA ${{ inputs.cuda_version }}"
     steps:
       - name: Checkout ${{ github.repository }}
         uses: actions/checkout@v3
@@ -41,27 +41,27 @@ jobs:
         uses: ./.github/actions/build-windows-image
         with:
           repo: ghcr.io/${{ github.repository }}
-          win_edition: ${{ input.win_edition }}
-          vs_version: ${{ input.vs_version }}
-          cuda_version: ${{ input.cuda_version }}
-          isolation: ${{ input.isolation }}
+          win_edition: ${{ inputs.win_edition }}
+          vs_version: ${{ inputs.vs_version }}
+          cuda_version: ${{ inputs.cuda_version }}
+          isolation: ${{ inputs.isolation }}
 
       - name: "Test image: ${{ steps.build_image.outputs.image }}"
         id: test_image
         uses: ./.github/actions/test-windows-image
         with:
           repo: ghcr.io/${{ github.repository }}
-          win_edition: ${{ input.win_edition }}
-          vs_version: ${{ input.vs_version }}
-          cuda_version: ${{ input.cuda_version }}
-          isolation: ${{ input.isolation }}
+          win_edition: ${{ inputs.win_edition }}
+          vs_version: ${{ inputs.vs_version }}
+          cuda_version: ${{ inputs.cuda_version }}
+          isolation: ${{ inputs.isolation }}
 
       - name: "Push image: ${{ steps.build_image.outputs.image }}"
         id: push_image
         uses: ./.github/actions/push-windows-image
         with:
           repo: ghcr.io/${{ github.repository }}
-          win_edition: ${{ input.win_edition }}
-          vs_version: ${{ input.vs_version }}
-          cuda_version: ${{ input.cuda_version }}
-          isolation: ${{ input.isolation }}
+          win_edition: ${{ inputs.win_edition }}
+          vs_version: ${{ inputs.vs_version }}
+          cuda_version: ${{ inputs.cuda_version }}
+          isolation: ${{ inputs.isolation }}

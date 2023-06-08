@@ -33,6 +33,6 @@ runs:
         .github\actions\test-windows-image\action.ps1  `
           -cudaVersion ${{ inputs.cuda_version }}      `
           -msvcVersion ${{ inputs.vs_version }}        `
-          -edition ${{ inputs.os }}                    `
+          -edition ${{ inputs.win_edition }}           `
           -isolation ${{ inputs.isolation }}           `
           -repo ${{ inputs.repo }}

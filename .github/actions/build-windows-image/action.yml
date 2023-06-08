@@ -34,14 +34,10 @@ runs:
     - name: "Build ${{ inputs.repo }}:${{ inputs.service }}"
       id: build
       shell: powershell
-      env:
-        REPO: "${{ inputs.repo }}"
-        SERVICE: "${{ inputs.os }}-${{ inputs.vs_version }}"
-        TAG: "${{ inputs.repo }}:${{ inputs.os }}-cuda-msvc-${{ inputs.vs_version }}"
       run: |
         .github/actions/build-windows-image/action.ps1 `
           -cudaVersion ${{ inputs.cuda_version }}      `
           -msvcVersion ${{ inputs.vs_version }}        `
-          -edition ${{ inputs.os }}                    `
+          -edition ${{ inputs.win_edition }}           `
           -isolation ${{ inputs.isolation }}           `
           -repo ${{ inputs.repo }}
