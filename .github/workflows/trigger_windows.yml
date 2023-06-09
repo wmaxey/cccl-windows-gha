@@ -36,3 +36,4 @@ jobs:
       win_edition: ${{ matrix.edition }}
       vs_version: ${{ matrix.vs_version }}
       cuda_version: ${{ matrix.cuda_version }}
+      push_image: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}

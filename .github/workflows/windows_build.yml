@@ -17,6 +17,9 @@ on:
         type: string
         required: true
         description: CUDA version
+      push_image:
+        type: boolean
+        description: Push images only if true
 
 jobs:
   build_windows_image:
@@ -57,6 +60,7 @@ jobs:
           isolation: process
 
       - name: "Push image: ${{ steps.build_image.outputs.image }}"
+        if: ${{ inputs.push_image }}
         id: push_image
         uses: ./.github/actions/push-windows-image
         with:
