@@ -4,8 +4,8 @@ services:
     image: "$IMAGE_NAME"
     tty: true
     build:
-      context: ./image
-      dockerfile: ../windows.dockerfile
+      context: .\image
+      dockerfile: ..\windows.dockerfile
       args:
         MSVC_VER: "$MSVC_VER"
         MSVC_COMPILER_VER: "$MSVC_COMPILER_VER"

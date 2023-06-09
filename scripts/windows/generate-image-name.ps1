@@ -3,10 +3,10 @@ Param(
     [Parameter(Mandatory=$true)]
     [string]
     $clVersion,
-    [Parameter(Mandatory=$false)]
+    [Parameter(Mandatory=$true)]
     [string]
-    $cudaVersion="latest",
-    [Parameter(Mandatory=$false)]
+    $cudaVersion,
+    [Parameter(Mandatory=$true)]
     [string]
     $edition,
     [Parameter(Mandatory=$true)]

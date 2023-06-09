@@ -19,11 +19,12 @@ Param(
 $ErrorActionPreference = "Stop"
 
 # Assume this script is launched from repo root.
-./images/vs-version-matrix.ps1
+.\scripts\windows\vs-version-matrix.ps1
 $clVerArray = ($vsVerToCompilers[$msvcVersion])
 
+
 foreach($cl in $clVerArray) {
-    $image=$(./images/generate-image-name -clVersion $cl -cudaVersion $cudaVersion -edition $edition -repo $repo)
+    $image=$(.\scripts\windows\generate-image-name -clVersion $cl -cudaVersion $cudaVersion -edition $edition -repo $repo)
     Write-Output "Pushing $image"
 
     docker push $image

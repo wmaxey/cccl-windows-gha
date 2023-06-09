@@ -19,9 +19,9 @@ Param(
 $ErrorActionPreference = "Stop"
 
 # Assume this script is launched from repo root.
-./images/vs-version-matrix.ps1
+.\scripts\windows\vs-version-matrix.ps1
 $clVerArray = $vsVerToCompilers[$msvcVersion]
 
 foreach ($cl in $clVerArray) {
-    ./images/docker-build.ps1 -clVersion $cl -isolation $isolation -cudaVersion $cudaVersion -edition $edition -repo $repo
+    .\scripts\windows\build-windows-image.ps1 -clVersion $cl -isolation $isolation -cudaVersion $cudaVersion -edition $edition -repo $repo
 }

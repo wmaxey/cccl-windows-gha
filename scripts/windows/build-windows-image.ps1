@@ -2,7 +2,7 @@
 Param(
     [Parameter(Mandatory=$true)]
     [string]
-    $clVersion,
+    $clVersion="latest",
     [Parameter(Mandatory=$false)]
     [string]
     $cudaVersion="latest",
@@ -18,6 +18,12 @@ Param(
     [string]
     $repo="local"
 )
+
+function TestReturnCode {
+    if (-not $?) {
+        throw 'Step Failed'
+    }
+}
 
 Push-location "$PSScriptRoot"
 
@@ -38,6 +44,7 @@ try {
     $ENV:MSVC_COMPILER_VER="$clVersion"
     $ENV:CUDA_VER="$cudaVersion"
     $ENV:ROOT_IMAGE="$rootWindowsImage"
+    $ENV:BUILDKIT_PROGRESS="plain"
 
     Write-Output "Building $ENV:IMAGE_NAME"
     Write-Output "with args:"
@@ -48,7 +55,21 @@ try {
     Write-Output "ENV:CUDA_VER           $ENV:CUDA_VER"
     Write-Output "ENV:ROOT_IMAGE         $ENV:ROOT_IMAGE"
 
-    docker compose -f .\docker-compose.yml build windows --progress=plain
+    # Docker Desktop includes the compose command while CE installations will only have the standalone plugin.
+
+    $compose = "docker compose"
+    try {
+        docker compose
+        TestReturnCode
+    }
+    catch {
+        $compose = "docker-compose.exe"
+    }
+
+    Write-Output "Using $compose for building"
+    $compose = "$compose -f .\docker-compose.yml build windows"
+
+    Invoke-Expression $compose
 }
 catch {
     Pop-Location
