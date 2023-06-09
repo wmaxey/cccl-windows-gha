@@ -10,10 +10,10 @@ $ErrorActionPreference='Stop'
 Push-location "$PSScriptRoot"
 
 ## Source and install the below
-./scripts/install-cuda.ps1 -cudaVersion $cudaVersion
-./scripts/install-lit.ps1
-./scripts/install-cmake.ps1
-./scripts/install-ninja.ps1
+./installers/install-cuda.ps1 -cudaVersion $cudaVersion
+./installers/install-lit.ps1
+./installers/install-cmake.ps1
+./installers/install-ninja.ps1
 
 ## Save the current environment without MSVC plugged in
 New-Item -ItemType Directory -Path "$HOME" -Name "build-env"
@@ -27,6 +27,6 @@ $envFilter = `
 $ENV:INSTALLED_MSVC_VERSION=$msvcVersion
 Get-ChildItem ENV: | Where-Object { $_.Name -notin $envFilter } | Export-CliXml "$HOME\build-env\env-var.clixml"
 
-./scripts/clear-temp.ps1
+./installers/clear-temp.ps1
 
 Pop-Location

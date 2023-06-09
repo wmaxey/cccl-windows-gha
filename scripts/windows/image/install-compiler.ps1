@@ -13,7 +13,7 @@ $ErrorActionPreference='Stop'
 Push-location "$PSScriptRoot"
 
 ## Install older vs cl
-./scripts/install-vs.ps1 -msvcVersion $msvcVersion -clVersion $clVersion
-./scripts/clear-temp.ps1
+./installers/install-vs.ps1 -msvcVersion $msvcVersion -clVersion $clVersion
+./installers/clear-temp.ps1
 
 Pop-Location
