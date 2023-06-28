@@ -1,7 +1,6 @@
-# Building Docker containers on Windows
+# Setting up Windows Containers on Windows
 
-This Dockerfile can be built and then ran while mapped to your workspace to help with building applications on Windows.
-This process removes much of the difficulty in assembling a workspace compatible with several CCCL projects.
+These are instructions for configuring Windows to launch WCoW images for local development with CUDA and MSVC.
 
 ## Caveats
 
