@@ -8,9 +8,7 @@ This process removes much of the difficulty in assembling a workspace compatible
 It is easy to be successful with hyperv enabled, however the true potential of the container can be
 achieved when `--isolation=process` is used. This requires either Windows 11 or Server editions of Windows.
 
-## Building the container
-
-### Step 0
+## Setting up Docker on Windows
 
 If you are developing and testing, [install docker-desktop.](https://docs.docker.com/desktop/) If you are worried about
 deployment you may need to
@@ -30,21 +28,8 @@ Invoke-WebRequest -UseBasicParsing "https://github.com/docker/compose/releases/d
 If issuing docker commands from a non-elevated prompt, you may need to add yourself to the `docker` group or modify the
 Docker config: `daemon.json` appropriately to include the group you belong to.
 
-### Step 1
-
-Build desired configuration. Windows 2019 and Windows 2022 versions map to Windows 10 and 11 respectively.
-
-`$> .\scripts\windows\build-windows-image.ps1 -clVersion 14.36 -cudaVersion 12.1 -edition windows-2019 -isolation hyperv -repo local"`
-
-### Step 2
+## Launching Windows configurations:
 
 Start up the container and mount workspace directories as needed.
 
-`$> docker run --mount type=bind,src="$(pwd)",dst="C:\thrust" -it local:windows-cuda-12.1-cl-14.36 powershell`
-
-### Step 3 - Build your projects
-
-The environment will be configured to use the compiler you when the image was built, and NVCC will be already available.
-
-`$> cmake -S thrust -B build -G Ninja`
-`$> ninja -C build thrust.tests`
+`$> docker run --mount type=bind,src="$(pwd)",dst="C:\thrust" -it ${ImageRepo}:windows-cuda-12.1-cl-14.36 powershell`
